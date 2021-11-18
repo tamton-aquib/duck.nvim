@@ -12,7 +12,7 @@ A duck that waddles between your codes
 
 ```lua
 use {
-    'tamton-aquib',
+    'tamton-aquib/duck.nvim',
     config = function()
         vim.api.nvim_set_keymap('n', '<leader>dd', ':lua require("duck").hatch()<CR>', {noremap=true})
         vim.api.nvim_set_keymap('n', '<leader>dk', ':lua require("duck").cook()<CR>', {noremap=true})
