@@ -1,20 +1,16 @@
 local M = {}
 M.ducks_list = {}
+M.conf = {character="🦆", winblend=100, speed=100, character_width=2}
 
--- TODO: maybe a function to drag it to center
--- TODO: a mode to wreck the current buffer
-
+-- TODO: a mode to wreck the current buffer?
 local waddle = function(duck)
 	local timer = vim.loop.new_timer()
-	local new_duck = {
-		name = duck,
-		timer = timer
-	}
+	local new_duck = { name = duck, timer = timer }
 	table.insert(M.ducks_list, new_duck)
 
-	vim.loop.timer_start(timer, 1000, 100, vim.schedule_wrap(function()
+	local speed = math.abs(100 - (M.conf.speed or 0))
+	vim.loop.timer_start(timer, 1000, speed , vim.schedule_wrap(function()
 		if vim.api.nvim_win_is_valid(duck) then
-			-- TODO: restrict movement inside walls
 			local config = vim.api.nvim_win_get_config(duck)
 			local col, row = config["col"][false], config["row"][false]
 
@@ -36,12 +32,13 @@ end
 
 M.hatch = function(character)
 	local buf = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_buf_set_lines(buf , 0, 1, true , {character or "🦆"})
+	vim.api.nvim_buf_set_lines(buf , 0, 1, true , {character or M.conf.character})
 
 	local duck = vim.api.nvim_open_win(buf, false, {
-		relative='cursor', style='minimal', row=1, col=1, width=2, height=1
+		relative='cursor', style='minimal', row=1, col=1, width=M.conf.character_width or 2, height=1
 	})
-	vim.api.nvim_win_set_option(duck, 'winblend', 100)
+	vim.api.nvim_win_set_option(duck, 'winblend', M.conf.winblend or 100)
+	vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Duck')
 
 	waddle(duck)
 end
@@ -55,5 +52,7 @@ M.cook = function()
 	timer:close()
 	vim.api.nvim_win_close(duck, true)
 end
+
+M.setup = function(opts) M.conf = vim.tbl_deep_extend('force', M.conf, opts or {}) end
 
 return M
