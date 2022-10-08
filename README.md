@@ -14,8 +14,8 @@ A duck that waddles between your codes
 use {
     'tamton-aquib/duck.nvim',
     config = function()
-        vim.api.nvim_set_keymap('n', '<leader>dd', ':lua require("duck").hatch()<CR>', {noremap=true})
-        vim.api.nvim_set_keymap('n', '<leader>dk', ':lua require("duck").cook()<CR>', {noremap=true})
+        vim.keymap.set('n', '<leader>dd', function() require("duck").hatch() end, {})
+        vim.keymap.set('n', '<leader>dk', function() require("duck").cook() end, {})
     end
 }
 ```
@@ -24,7 +24,7 @@ To set custom character:
 ```lua
 nnoremap <leader>dd :lua require("duck").hatch("ඞ")<CR>
 ```
-> popular candidates: 🦆 ඞ 🐈 🐎 🦖 🐤
+> popular candidates: 🦆 ඞ  🦀 🐈 🐎 🦖 🐤 
 
 ### Features
 - can release multiple ducks.
