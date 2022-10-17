@@ -1,6 +1,6 @@
 local M = {}
 M.ducks_list = {}
-local conf = {character="🦆", speed=1, width=2}
+local conf = {character="🦆", speed=1, width=2, height=1}
 
 -- TODO: a mode to wreck the current buffer?
 local waddle = function(duck)
@@ -35,7 +35,7 @@ M.hatch = function(character)
 	vim.api.nvim_buf_set_lines(buf , 0, 1, true , {character or conf.character})
 
 	local duck = vim.api.nvim_open_win(buf, false, {
-		relative='cursor', style='minimal', row=1, col=1, width=conf.width, height=0
+		relative='cursor', style='minimal', row=1, col=1, width=conf.width, height=conf.height
 	})
 	vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Normal')
 
