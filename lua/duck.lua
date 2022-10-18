@@ -1,15 +1,14 @@
 local M = {}
 M.ducks_list = {}
-local conf = {character="🦆", speed=1, width=2, height=1}
+local conf = {character="🦆", speed=100, width=2, height=1}
 
 -- TODO: a mode to wreck the current buffer?
-local waddle = function(duck)
+local waddle = function(duck, speed)
 	local timer = vim.loop.new_timer()
 	local new_duck = { name = duck, timer = timer }
 	table.insert(M.ducks_list, new_duck)
 
-	local speed = math.abs(100 - conf.speed)
-	vim.loop.timer_start(timer, 1000, speed , vim.schedule_wrap(function()
+	vim.loop.timer_start(timer, 1000, speed or conf.speed , vim.schedule_wrap(function()
 		if vim.api.nvim_win_is_valid(duck) then
 			local config = vim.api.nvim_win_get_config(duck)
 			local col, row = config["col"][false], config["row"][false]
@@ -30,7 +29,7 @@ local waddle = function(duck)
 	end))
 end
 
-M.hatch = function(character)
+M.hatch = function(character, speed)
 	local buf = vim.api.nvim_create_buf(false, true)
 	vim.api.nvim_buf_set_lines(buf , 0, 1, true , {character or conf.character})
 
@@ -39,7 +38,7 @@ M.hatch = function(character)
 	})
 	vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Normal')
 
-	waddle(duck)
+	waddle(duck, speed)
 end
 
 M.cook = function()
