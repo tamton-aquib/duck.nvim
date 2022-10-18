@@ -1,6 +1,6 @@
 local M = {}
 M.ducks_list = {}
-local conf = {character="🦆", speed=100, width=2, height=1}
+local conf = {character="🦆", speed=10, width=2, height=1}
 
 -- TODO: a mode to wreck the current buffer?
 local waddle = function(duck, speed)
@@ -8,7 +8,8 @@ local waddle = function(duck, speed)
 	local new_duck = { name = duck, timer = timer }
 	table.insert(M.ducks_list, new_duck)
 
-	vim.loop.timer_start(timer, 1000, speed or conf.speed , vim.schedule_wrap(function()
+	local waddle_period = 1000 / (speed or conf.speed)
+	vim.loop.timer_start(timer, 1000, waddle_period, vim.schedule_wrap(function()
 		if vim.api.nvim_win_is_valid(duck) then
 			local config = vim.api.nvim_win_get_config(duck)
 			local col, row = config["col"][false], config["row"][false]
