@@ -26,6 +26,12 @@ nnoremap <leader>dd :lua require("duck").hatch("ඞ")<CR>
 ```
 > popular candidates: 🦆 ඞ  🦀 🐈 🐎 🦖 🐤 
 
+You can also specify how fast a duck moves (measured in steps per second):
+```lua
+vim.keymap.set('n', '<leader>dd', function() require("duck").hatch("🦆", 10) end, {}) -- A pretty fast duck
+vim.keymap.set('n', '<leader>dc', function() require("duck").hatch("🐈", 0.75) end, {}) -- Quite a mellow cat
+```
+
 ### Features
 - can release multiple ducks.
 - does not load on startup.
