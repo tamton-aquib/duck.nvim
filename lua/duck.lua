@@ -1,6 +1,34 @@
 local M = {}
 M.ducks_list = {}
-local conf = {character="🦆", speed=10, width=2, height=1}
+local conf = {
+	character="🦆",
+	speed=10,
+	width=2,
+	height=1,
+	screensaver = false,
+	wait_mins = 1
+}
+
+local init_screensaver = function(cfg_tbl)
+	local saving_screen = false
+	local timer = vim.loop.new_timer()
+	local wait_ms = cfg_tbl.wait_mins * 1000 * 60
+
+	vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "InsertCharPre" }, {
+		callback = function()
+
+			if saving_screen then
+				require("duck").cook()
+				saving_screen = false
+			else
+				timer:start(wait_ms, 0, vim.schedule_wrap(function()
+					require("duck").hatch(cfg_tbl.character, cfg_tbl.speed)
+					saving_screen = true
+				end))
+			end
+		end,
+	})
+end
 
 -- TODO: a mode to wreck the current buffer?
 local waddle = function(duck, speed)
@@ -59,7 +87,11 @@ M.cook = function()
 end
 
 M.setup = function(opts)
-    conf = vim.tbl_deep_extend('force', conf, opts or {})
+  conf = vim.tbl_deep_extend('force', conf, opts or {})
+
+	if conf.screensaver then
+		init_screensaver(conf)
+	end
 end
 
-return M
+return M 
