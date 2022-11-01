@@ -16,7 +16,6 @@ local init_screensaver = function(cfg_tbl)
 
 	vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "InsertCharPre" }, {
 		callback = function()
-
 			if saving_screen then
 				require("duck").cook()
 				saving_screen = false
@@ -89,9 +88,9 @@ end
 M.setup = function(opts)
   conf = vim.tbl_deep_extend('force', conf, opts or {})
 
-	if conf.screensaver then
-		init_screensaver(conf)
-	end
+  if conf.screensaver then
+    init_screensaver(conf)
+  end
 end
 
-return M 
+return M
