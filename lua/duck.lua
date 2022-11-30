@@ -19,6 +19,22 @@ local waddle = function(duck, speed)
             local s = math.sin(angle)
             local c = math.cos(angle)
 
+            if row < 0 and s < 0 then
+              row = vim.o.lines
+            end
+
+            if row > vim.o.lines  and s > 0 then
+              row = 0
+            end
+
+            if col < 0 and c < 0 then
+              col = vim.o.columns
+            end
+
+            if col > vim.o.columns and c > 0 then
+              col = 0
+            end
+
             config["row"] = row + 0.5 * s
             config["col"] = col + 1 * c
             
