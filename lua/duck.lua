@@ -15,16 +15,29 @@ local waddle = function(duck, speed)
             local col, row = config["col"][false], config["row"][false]
 
             math.randomseed(os.time()*duck)
-            local movement = math.ceil(math.random()*4)
-            if movement == 1 or row <= 0 then
-                config["row"] = row + 1
-            elseif movement == 2 or row >= vim.o.lines-1 then
-                config["row"] = row - 1
-            elseif movement == 3 or col <= 0 then
-                config["col"] = col + 1
-            elseif movement == 4 or col >= vim.o.columns-2 then
-                config["col"] = col - 1
+            local angle = 2 * math.pi * math.random()
+            local s = math.sin(angle)
+            local c = math.cos(angle)
+
+            if row < 0 and s < 0 then
+              row = vim.o.lines
             end
+
+            if row > vim.o.lines  and s > 0 then
+              row = 0
+            end
+
+            if col < 0 and c < 0 then
+              col = vim.o.columns
+            end
+
+            if col > vim.o.columns and c > 0 then
+              col = 0
+            end
+
+            config["row"] = row + 0.5 * s
+            config["col"] = col + 1 * c
+            
             vim.api.nvim_win_set_config(duck, config)
         end
     end))
