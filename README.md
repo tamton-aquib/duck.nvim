@@ -35,5 +35,5 @@ vim.keymap.set('n', '<leader>dc', function() require("duck").hatch("🐈", 0.75)
 ### Features
 - can release multiple ducks.
 - does not load on startup.
-- Light weight, approximately 50LOC
+- Light weight, <100 LOC
 - Its a duck

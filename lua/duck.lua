@@ -1,6 +1,6 @@
 local M = {}
 M.ducks_list = {}
-local conf = {character="🦆", speed=10, width=2, height=1}
+local conf = {character="🦆", speed=10, width=2, height=1, color="none", blend=100}
 
 -- TODO: a mode to wreck the current buffer?
 local waddle = function(duck, speed)
@@ -37,20 +37,21 @@ local waddle = function(duck, speed)
 
             config["row"] = row + 0.5 * s
             config["col"] = col + 1 * c
-            
+
             vim.api.nvim_win_set_config(duck, config)
         end
     end))
 end
 
-M.hatch = function(character, speed)
+M.hatch = function(character, speed, color)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf , 0, 1, true , {character or conf.character})
 
     local duck = vim.api.nvim_open_win(buf, false, {
         relative='cursor', style='minimal', row=1, col=1, width=conf.width, height=conf.height
     })
-    vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Normal')
+    vim.cmd("hi Duck guifg=" .. (color or conf.color) .. " guibg=none blend=" .. conf.blend)
+    vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Duck')
 
     waddle(duck, speed)
 end
