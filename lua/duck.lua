@@ -50,8 +50,8 @@ M.hatch = function(character, speed, color)
     local duck = vim.api.nvim_open_win(buf, false, {
         relative='cursor', style='minimal', row=1, col=1, width=conf.width, height=conf.height
     })
-    vim.cmd("hi Duck guifg=" .. (color or conf.color) .. " guibg=none blend=" .. conf.blend)
-    vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Duck')
+    vim.cmd("hi Duck"..duck.." guifg=" .. (color or conf.color) .. " guibg=none blend=" .. conf.blend)
+    vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Duck'..duck)
 
     waddle(duck, speed)
 end
