@@ -11,7 +11,7 @@ A duck that waddles between your codes
 ### Install and Configure
 
 ```lua
-use {
+{
     'tamton-aquib/duck.nvim',
     config = function()
         vim.keymap.set('n', '<leader>dd', function() require("duck").hatch() end, {})
