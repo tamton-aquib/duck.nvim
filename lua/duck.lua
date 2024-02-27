@@ -73,20 +73,13 @@ M.cook = function()
 end
 
 M.cook_all = function()
+    if #M.ducks_list <= 0 then
+        vim.notify("No ducks to cook!")
+        return
+    end
+
     while (#M.ducks_list > 0) do
-        local last_duck = M.ducks_list[#M.ducks_list]
-
-        if not last_duck then
-            vim.notify("No ducks to cook!")
-            return
-        end
-
-        local duck = last_duck['name']
-        local timer = last_duck['timer']
-        table.remove(M.ducks_list, #M.ducks_list)
-        timer:stop()
-
-        vim.api.nvim_win_close(duck, true)
+        M.cook()
     end
 end
 
