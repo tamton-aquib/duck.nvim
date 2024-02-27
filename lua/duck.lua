@@ -72,6 +72,17 @@ M.cook = function()
     vim.api.nvim_win_close(duck, true)
 end
 
+M.cook_all = function()
+    if #M.ducks_list <= 0 then
+        vim.notify("No ducks to cook!")
+        return
+    end
+
+    while (#M.ducks_list > 0) do
+        M.cook()
+    end
+end
+
 M.setup = function(opts)
     conf = vim.tbl_deep_extend('force', conf, opts or {})
 end
