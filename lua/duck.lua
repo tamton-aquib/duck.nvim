@@ -12,7 +12,7 @@ local waddle = function(duck, speed)
     vim.loop.timer_start(timer, 1000, waddle_period, vim.schedule_wrap(function()
         if vim.api.nvim_win_is_valid(duck) then
             local config = vim.api.nvim_win_get_config(duck)
-            local col, row = config["col"][false], config["row"][false]
+            local col, row = config["col"], config["row"]
 
             math.randomseed(os.time()*duck)
             local angle = 2 * math.pi * math.random()
