@@ -12,7 +12,12 @@ local waddle = function(duck, speed)
     vim.loop.timer_start(timer, 1000, waddle_period, vim.schedule_wrap(function()
         if vim.api.nvim_win_is_valid(duck) then
             local config = vim.api.nvim_win_get_config(duck)
-            local col, row = config["col"], config["row"]
+            local col, row = 0, 0
+            if vim.version().minor < 10 then -- Neovim 0.9
+                col, row = config["col"][false], config["row"][false]
+            else -- Neovim 0.10
+                col, row = config["col"], config["row"]
+            end
 
             math.randomseed(os.time()*duck)
             local angle = 2 * math.pi * math.random()
