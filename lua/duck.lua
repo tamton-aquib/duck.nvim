@@ -2,6 +2,7 @@ local waddle = require('waddle')
 
 local M = {}
 M.ducks_list = {}
+local random_wandle = require('random_waddle')
 local conf = { character = "🦆", speed = 10, width = 2, height = 1, color = "none", blend = 100 }
 
 M.hatch = function(character, speed, color, strategy)
@@ -15,8 +16,7 @@ M.hatch = function(character, speed, color, strategy)
     vim.api.nvim_win_set_option(duck, 'winhighlight', 'Normal:Duck' .. duck)
 
     if strategy == nil then
-        local rnd_wandle = require('random_waddle')
-        strategy = rnd_wandle.random_waddle(rnd_wandle)
+        strategy = random_wandle:random_waddle()
     end
 
     waddle.waddle(duck, speed, conf, strategy)
@@ -56,6 +56,9 @@ end
 M.default_strategies = {
     always_right_strategy = function(positions)
         return { col = positions.col + 1, row = positions.row }
+    end,
+    random_waddle = function(positions)
+        random_wandle:random_waddle()(positions)
     end
 }
 
