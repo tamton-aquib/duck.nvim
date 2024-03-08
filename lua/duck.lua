@@ -54,7 +54,7 @@ M.setup = function(opts)
 end
 
 M.default_strategies = {
-    to_the_right = function(positions)
+    always_right_strategy = function(positions)
         return { col = positions.col + 1, row = positions.row }
     end
 }

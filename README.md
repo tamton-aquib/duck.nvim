@@ -46,6 +46,8 @@ end
 require("duck").hatch("🦆", 5, "none", always_right_strategy)
 ```
 
+> This strategies is available at `require("duck").default_strategies.always_right_strategy`
+
 ### Features
 - can release multiple ducks.
 - does not load on startup.
