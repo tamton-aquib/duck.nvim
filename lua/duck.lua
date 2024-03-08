@@ -2,6 +2,7 @@ local waddle = require('waddle')
 
 local M = {}
 M.ducks_list = {}
+
 local random_wandle = require('random_waddle')
 local conf = { character = "🦆", speed = 10, width = 2, height = 1, color = "none", blend = 100 }
 
@@ -10,7 +11,7 @@ local default_strategies = {
         return { col = positions.col + 1, row = positions.row }
     end,
     random_waddle = function(positions)
-        random_wandle.random_waddle(random_wandle)(positions)
+        return random_wandle:random_waddle()(positions)
     end
 }
 
