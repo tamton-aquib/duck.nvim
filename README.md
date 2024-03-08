@@ -33,6 +33,19 @@ vim.keymap.set('n', '<leader>dd', function() require("duck").hatch("🦆", 10) e
 vim.keymap.set('n', '<leader>dc', function() require("duck").hatch("🐈", 0.75) end, {}) -- Quite a mellow cat
 ```
 
+### New position strategies
+
+hatch function support a strategy to pass to override the current one.
+
+for example, the following strategy always push the dock to the right:
+```lua
+local always_right_strategy = function(positions) -- {col = <val>, row = <val>}
+    return {col = positions.col + 1, row = positions.row}
+end
+
+require("duck").hatch("🦆", 5, "none", always_right_strategy)
+```
+
 ### Features
 - can release multiple ducks.
 - does not load on startup.

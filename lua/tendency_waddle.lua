@@ -1,9 +1,30 @@
-local L = {}
+local M = {}
 
-function L.new()
-  local M = {}
+-- return a complex and configurable strategy to push the duck to area of the screen. With few bugs
+-- this strategy is available as example to show how to create a strategy, inspire new ones.
+-- it is not considered as public API. It is opened to frequent breaking changes. Do not use it directly. Prefer to copy paste it yourself.
+M.new = function()
+  local I = {}
 
-  function M.col_or_row(self)
+  -- this is the entry proint for the strategy
+  I.waddle = function(self)
+    return function(duck)
+      local global_strategy = self.col_or_row(self)
+      if global_strategy.comparer(duck) then
+        if self.get_random() > self.probability then -- then 1/3 chance to go right
+          return global_strategy.returner(duck)
+        end
+      end
+
+      local rnd_pos = self.sub_strategy(duck)
+      if global_strategy.end_of_screen_reached(duck) then -- do not reach the end of the screen
+        rnd_pos = global_strategy.end_of_screen_returner(rnd_pos)
+      end
+      return rnd_pos
+    end
+  end
+
+  I.col_or_row = function(self)
     return {
       comparer = function(duck)
         return duck.col < self.screen_pos_trigger()
@@ -22,41 +43,24 @@ function L.new()
     }
   end
 
-  function M.screen_pos_trigger()
+  I.screen_pos_trigger = function()
     return vim.o.columns * 2 / 3
   end
 
-  M.probability = 0.66
+  I.probability = 0.66
 
-  function M.get_random()
+  I.get_random = function()
     -- replace this function if you want to control the random values
     return math.random()
   end
 
-  function M.sub_strategy(duck)
+  I.sub_strategy = function(duck)
     local rndstr = require('random_waddle')
     return rndstr.random_waddle(rndstr)(duck)
   end
 
-  -- this is the default waddlw
-  function M.random_waddle(self)
-    return function(duck)
-      local global_strategy = self.col_or_row(self)
-      if global_strategy.comparer(duck) then
-        if self.get_random() > self.probability then -- then 1/3 chance to go right
-          return global_strategy.returner(duck)
-        end
-      end
-
-      local rnd_pos = self.sub_strategy(duck)
-      if global_strategy.end_of_screen_reached(duck) then -- do not reach the end of the screen
-        rnd_pos = global_strategy.end_of_screen_returner(rnd_pos)
-      end
-      return rnd_pos
-    end
-  end
-
-  function M.default_setup_for_row(self)
+  -- this function is used to configure the strategy to target the rows with default values
+  I.default_setup_for_row = function(self)
     self.col_or_row = function()
       return {
         comparer = function(duck)
@@ -81,7 +85,7 @@ function L.new()
     end
   end
 
-  return M
+  return I
 end
 
-return L
+return M
